@@ -7,7 +7,7 @@ kenoFile = 'keno_output_pktest'
 kenoFileInput = open(kenoFile, 'r+')
 outputFiss = open('outputFissTemp','w')
 outputUnit = open('outputUnitFinal','w')
-outputUnitArray = []
+outputUnitArray = ['     Unit #']
 #-----Parse keno input to find the fission density and corresponding unit number
 for line in kenoFileInput:
         if "              unit      region   density     deviation    productions          density     deviation      fissions" in line:
@@ -22,7 +22,7 @@ for line in kenoFileInput:
                                         pass
                                 else:
 #                                        outputUnit.write(line[15:18] + '\n')
-                                        outputUnitArray.append(line[15:18])
+                                        outputUnitArray.append(int(line[15:18]))
 outputFiss.flush()
 #inputUnit = open('outputUnitFinal','r+')
 inputFiss = open('outputFissTemp', 'r+').readlines()
@@ -34,8 +34,8 @@ inputFiss = open('outputFissTemp', 'r+').readlines()
 #-----Kappa value is 3.1E-11 Joules/fission, from 192MeV/fission for U235
 inputF = inputFiss[1:-1]
 total = 0.0
-inputFarray = []
-powerDenArray = []
+inputFarray = ['Fission Density']
+powerDenArray = ['Power Density']
 #kappa = 0.000000000031
 kappa = 3.1E-11
 for line in inputF:
@@ -49,4 +49,4 @@ for line in inputF:
 
 output = '\n'.join('\t'.join(map(str,row)) for row in zip(inputFarray,powerDenArray,outputUnitArray))
 with open('outputUnitFissFinal', 'w') as f:
-    f.write(output)
+        f.write(output)

@@ -44,17 +44,20 @@ for i in range(max_x):
 for q in range (len(array_x_y_unit)): 
         x_pts.append(round(array_x_y_unit[q].x,3) )
 	y_pts.append(round(array_x_y_unit[q].y,3) )
-	z_pts.append(array_x_y_unit[q].unit_num)
+	z_pts.append(int(array_x_y_unit[q].unit_num))
 
+x_pts.insert(0,'X ')
+y_pts.insert(0,'Y ')
+z_pts.insert(0,'Unit #')
 #-------Write out points and corresponding unit number------#         
 output = '\n'.join('\t'.join(map(str,row)) for row in zip(x_pts,y_pts,z_pts))
-with open('outputUnit.txt', 'w') as f:
+with open('outputXY-Unit', 'w') as f:
     f.write(output)
 #-------------------------------------------------------------
 
 #---------Assign flux for each unit------------
 
 #-------------PLOT-------------------------------------------
-plt.scatter(x_pts,y_pts,marker='.',s=150,c=z_pts)
+#plt.scatter(x_pts,y_pts,marker='.',s=150,c=z_pts)
 
 plt.show()
