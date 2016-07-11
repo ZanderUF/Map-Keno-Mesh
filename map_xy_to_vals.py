@@ -21,10 +21,16 @@ kenoFileInput = open(kenoFile, 'r+')
 outputFiss = open('outputFissTemp','w')
 thermalFile = open('thermal_conductivity','r+')
 outputUnitArray = ['     Unit #']
-thermalArray = [' thermal Cond [W/(cm C)']
+thermalArray = [' thermal Cond [W/(cm K)']
+temperatureFile = open('temperatures','r+')
+temperatureArray = ['Temp [k]']
 #------Read thermal conductivity from file with order of unit---------# 
 for line in thermalFile:
         thermalArray.append(float(line))
+#------Read temperature from file with order of unit------------------#
+#------***WILL EVENTUALL NEED TO GET FROM KENO INPUT------------------#
+for line in temperatureFile:
+        temperatureArray.append(float(line))
 #------Find the fission density and corresponding unit numberi--------#
 for line in kenoFileInput:
         if "              unit      region   density     deviation    productions          density     deviation      fissions" in line:
@@ -61,7 +67,8 @@ for line in inputF:
         else:
                 total = total + float(line)
 
-output = '\n'.join('\t'.join(map(str,row)) for row in zip(inputFarray,powerDenArray,outputUnitArray,thermalArray))
+output = '\n'.join('\t'.join(map(str,row)) for row in zip(inputFarray
+        ,powerDenArray,outputUnitArray,thermalArray,temperatureArray))
 with open('outputUnitFissFinal', 'w') as f:
         f.write(output)
 
@@ -124,13 +131,20 @@ inputXYunit  = np.loadtxt('outputXY-unit',skiprows=1)
 output = open('final-mapped-xy-densities.txt','w')
 output.write( '{0:<10}'.format('X') + "   " + '{0:<10}'.format('Y')
 + "   " + '{0:<10}'.format('Unit ') + "   " + '{0:<10}'.format('Fiss Den')
-+ "   " + '{0:<10}'.format('Power Den') + "    " + '{0:<10}'.format('Thermal Cond') + '\n')
++ "   " + '{0:<10}'.format('Power Den') 
++ "    " + '{0:<10}'.format('Therm-Cond') 
++ "    " + '{0:<10}'.format('Temperature') + '\n')
 for lineXY in inputXYunit:
         for lineDen in inputDensity:
                 if lineXY[2] == lineDen[2]:
-                        output.write( '{0:<10}'.format(str(lineXY[0])) + "   " + '{0:<10}'.format(str(lineXY[1]))
-                        + "   " + '{0:<10}'.format(str(lineXY[2])) + "   " + '{0:<10}'.format(str(lineDen[0]))
-                        + "   " + '{0:<10}'.format(str(lineDen[1])) + "   " + '{0:<10}'.format(str(lineDen[3])) +'\n' )
+                        output.write( '{0:<10}'.format(str(lineXY[0])) 
+                        + "   " + '{0:<10}'.format(str(lineXY[1]))
+                        + "   " + '{0:<10}'.format(str(lineXY[2]))  
+                        + "   " + '{0:<10}'.format(str(lineDen[0]))
+                        + "   " + '{0:<10}'.format(str(lineDen[1]))
+                        + "   " + '{0:<10}'.format(str(lineDen[3])) 
+                        + "   " + '{0:<10}'.format(str(lineDen[4])) 
+                        +'\n' )
 
 #-------------------------------CLEAN UP-------------------------------#
 if DEBUG == 'True':
