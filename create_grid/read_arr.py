@@ -54,10 +54,7 @@ output = '\n'.join('\t'.join(map(str,row)) for row in zip(x_pts,y_pts,z_pts))
 with open('outputXY-Unit', 'w') as f:
     f.write(output)
 #-------------------------------------------------------------
-
-#---------Assign flux for each unit------------
-
+outputXY-Unit.flush()
 #-------------PLOT-------------------------------------------
 #plt.scatter(x_pts,y_pts,marker='.',s=150,c=z_pts)
-
-plt.show()
+#plt.show()
