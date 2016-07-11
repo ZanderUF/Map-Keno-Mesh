@@ -74,7 +74,7 @@ color_z = []
 #---------------GET THE UNIT NUMBERS FROM KENO ARRAY------------------#
 #filename= raw_input("Enter the file name containing the array: ")
 
-data = np.loadtxt('array_pktest')
+kenoDataArray = np.loadtxt('array_pktest')
 class point_on_grid(object):
         def __init__(self,x,y,unit_num,tot_flux):
                 self.x=x
@@ -82,19 +82,18 @@ class point_on_grid(object):
                 self.unit_num=unit_num
                 self.tot_flux=tot_flux
 #---------------------------------------------------------------------#
-tot_flux = .5
-max_x=len(data)
-max_y=len(data[0])
+tot_flux = .5 #---dummy value now
+max_x=len(kenoDataArray)
+max_y=len(kenoDataArray[0])
 i=0
 j=0
-color = 'blue'
 xpt=0.0
 ypt=0.0
 for i in range(max_x):
         for j in range(max_y):
                 xpt = float(j*10.10)
                 ypt= float(i*10.10)
-                point = point_on_grid(xpt,ypt,data[i][j],tot_flux)
+                point = point_on_grid(xpt,ypt,kenoDataArray[i][j],tot_flux)
                 array_x_y_unit.append(point)
                 j+=1
         #ypt= i*10.105
