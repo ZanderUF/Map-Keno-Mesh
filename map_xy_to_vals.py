@@ -33,7 +33,8 @@ for line in temperatureFile:
         temperatureArray.append(float(line))
 #------Find the fission density and corresponding unit numberi--------#
 for line in kenoFileInput:
-        if "              unit      region   density     deviation    productions          density     deviation      fissions" in line:
+        if "              unit      region   density     deviation    
+productions          density     deviation      fissions" in line:
                 for line in kenoFileInput:
                         outputFiss.write(line[33:42] + '\n')
                         if "  global unit" in line: 
