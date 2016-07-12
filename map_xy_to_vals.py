@@ -33,8 +33,7 @@ for line in temperatureFile:
         temperatureArray.append(float(line))
 #------Find the fission density and corresponding unit numberi--------#
 for line in kenoFileInput:
-        if "              unit      region   density     deviation    
-productions          density     deviation      fissions" in line:
+        if "              unit      region   density     deviation    productions          density     deviation      fissions" in line:
                 for line in kenoFileInput:
                         outputFiss.write(line[33:42] + '\n')
                         if "  global unit" in line: 
@@ -99,8 +98,8 @@ xpt=0.0
 ypt=0.0
 for i in range(max_x):
         for j in range(max_y):
-                xpt = float(j*10.10)
-                ypt= float(i*10.10)
+                xpt = float(j*10)
+                ypt= float(i*10)
                 point = point_on_grid(xpt,ypt,kenoDataArray[i][j],tot_flux)
                 array_x_y_unit.append(point)
                 j+=1
@@ -129,24 +128,38 @@ if plt == 'TRUE':
 inputDensity = np.loadtxt('outputUnitFissFinal',skiprows=1)
 inputXYunit  = np.loadtxt('outputXY-unit',skiprows=1)
 
-output = open('final-mapped-xy-densities.txt','w')
-output.write( '{0:<10}'.format('X') + "   " + '{0:<10}'.format('Y')
-+ "   " + '{0:<10}'.format('Unit ') + "   " + '{0:<10}'.format('Fiss Den')
-+ "   " + '{0:<10}'.format('Power Den') 
-+ "    " + '{0:<10}'.format('Therm-Cond') 
-+ "    " + '{0:<10}'.format('Temperature') + '\n')
+output = open('cols-mapped-xy-densities.txt','w')
+#output.write( '{0:<10}'.format('X') + "   " + '{0:<10}'.format('Y')
+#+ "   " + '{0:<10}'.format('Unit ') + "   " + '{0:<10}'.format('Fiss Den')
+#+ "   " + '{0:<10}'.format('Power Den') 
+#+ "    " + '{0:<10}'.format('Therm-Cond') 
+#+ "    " + '{0:<10}'.format('Temperature') + '\n')
+
 for lineXY in inputXYunit:
         for lineDen in inputDensity:
                 if lineXY[2] == lineDen[2]:
-                        output.write( '{0:<10}'.format(str(lineXY[0])) 
+                         
+                        output.write( '{0:<10}'.format(str(lineXY[0]))
                         + "   " + '{0:<10}'.format(str(lineXY[1]))
-                        + "   " + '{0:<10}'.format(str(lineXY[2]))  
+                        + "   " + '{0:<10}'.format(str(lineXY[2]))
                         + "   " + '{0:<10}'.format(str(lineDen[0]))
                         + "   " + '{0:<10}'.format(str(lineDen[1]))
-                        + "   " + '{0:<10}'.format(str(lineDen[3])) 
-                        + "   " + '{0:<10}'.format(str(lineDen[4])) 
+                        + "   " + '{0:<10}'.format(str(lineDen[3]))
+                        + "   " + '{0:<10}'.format(str(lineDen[4]))
                         +'\n' )
-
+output.flush()
+#-------------------------------COl->Rows------------------------------#
+#-----Seems easier to get data in rows for MOOSE, this converts 
+rowHeaders = ['X-COORDINATE','Y-COORDINATE','UNIT NUMBER','FISSION DENSITY',
+'POWER DENSITY','THERMAL CONDUCTIVITY','TEMPERATURE']
+maxCols = rowHeaders.size()
+outT = open('cols-mapped-xy-densities.txt','w')
+transpose = np.loadtxt('rows-mapped-xy-densities.txt')
+i=0
+while i < maxCols:
+        np.savetxt(outT,transpose[:,i],newline=" ",fmt="%s")
+        outT.write('\n')
+        i+=1 
 #-------------------------------CLEAN UP-------------------------------#
 if DEBUG == 'True':
         #keep the temporary files
