@@ -152,11 +152,12 @@ output.flush()
 #-----Seems easier to get data in rows for MOOSE, this converts 
 rowHeaders = ['X-COORDINATE','Y-COORDINATE','UNIT NUMBER','FISSION DENSITY',
 'POWER DENSITY','THERMAL CONDUCTIVITY','TEMPERATURE']
-maxCols = rowHeaders.size()
-outT = open('cols-mapped-xy-densities.txt','w')
-transpose = np.loadtxt('rows-mapped-xy-densities.txt')
+maxCols = len(rowHeaders) - 1
+outT = open('rows-mapped-xy-densities.txt','w')
+transpose = np.loadtxt('cols-mapped-xy-densities.txt')
 i=0
 while i < maxCols:
+        outT.write(rowHeaders[i] + '\n') 
         np.savetxt(outT,transpose[:,i],newline=" ",fmt="%s")
         outT.write('\n')
         i+=1 
